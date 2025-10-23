@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Class Attendance</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    #student-select, #student-select option { color: #111827; }
+    option:disabled { color: #9ca3af; background-color: #f3f4f6; }
+  </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+  <div class="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 space-y-6">
+    <div class="text-center">
+      <h1 class="text-3xl font-bold text-gray-800">Class Attendance</h1>
+      <p class="text-gray-500 mt-2">Please select your name to mark your attendance.</p>
+    </div>
+    <div class="space-y-4">
+      <div>
+        <label for="student-select" class="sr-only">Select your name</label>
+        <select id="student-select" class="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+          <option value="" selected disabled>-- Select your name --</option>
+        </select>
+      </div>
+      <button id="confirm-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg">
+        Confirm Attendance
+      </button>
+    </div>
+    <div id="zoom-section" class="hidden text-center pt-4 border-t border-gray-200">
+      <h2 class="text-xl font-semibold text-green-600">Attendance Confirmed!</h2>
+      <p class="text-gray-600 mt-2 mb-4">Here are the details for today's class:</p>
+      <div class="text-left bg-gray-50 p-4 rounded-lg space-y-2">
+        <p><strong>Meeting ID:</strong> <span id="zoom-id" class="text-gray-700"></span></p>
+        <p><strong>Password:</strong> <span id="zoom-password" class="text-gray-700"></span></p>
+      </div>
+      <a id="zoom-link" href="#" target="_blank" class="mt-4 inline-block w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg">
+        Join Zoom Meeting
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const ATTENDANCE_WEBHOOK_URL = 'https://n8n.srv1021598.hstgr.cloud/webhook/log-attendance';
+    const classData = {"zoomInfo":{"zoomLink":"Yc","zoomId":"Uc","zoomPassword":"Y"},"studentList":["mo"]};
+    const zoomInfo = classData.zoomInfo || {};
+    const studentSelect = document.getElementById('student-select');
+    const confirmBtn = document.getElementById('confirm-btn');
+    const zoomSection = document.getElementById('zoom-section');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      (classData.studentList || []).forEach(name => {
+        const option = document.createElement('option');
+        option.value = name;
+        option.textContent = name;
+        studentSelect.appendChild(option);
+      });
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+      const selectedOption = studentSelect.options[studentSelect.selectedIndex];
+      if (!selectedOption || !selectedOption.value) {
+        alert("Please select your name first.");
+        return;
+      }
+
+      const studentName = selectedOption.value;
+
+      try {
+        const resp = await fetch(ATTENDANCE_WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: studentName }),
+        });
+
+        // Log response status and body for debugging
+        const respText = await resp.text();
+        if (!resp.ok) {
+          console.error('Server returned non-OK status', resp.status, respText);
+          alert('Could not log attendance. Please try again.');
+          return;
+        }
+
+        let data;
+        try {
+          data = JSON.parse(respText);
+        } catch (e) {
+          data = respText;
+        }
+        console.log('Attendance logged:', data);
+
+        document.getElementById('zoom-id').textContent = zoomInfo.zoomId || '';
+        document.getElementById('zoom-password').textContent = zoomInfo.zoomPassword || '';
+        document.getElementById('zoom-link').href = zoomInfo.zoomLink || '#';
+
+        selectedOption.disabled = true;
+        studentSelect.selectedIndex = 0;
+        zoomSection.classList.remove('hidden');
+      } catch (err) {
+        console.error('Fetch error:', err);
+        alert('Could not log attendance. Please try again.');
+      }
+    });
+  </script>
+</body>
+</html>
