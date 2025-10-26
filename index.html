@@ -5,42 +5,50 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Class Attendance</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Inter', sans-serif; }
     #student-select, #student-select option { color: #111827; }
     option:disabled { color: #9ca3af; background-color: #f3f4f6; }
+    /* Custom animation for confirmation */
+    @keyframes fadeInSlideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeInSlideUp {
+      animation: fadeInSlideUp 0.6s ease-out forwards;
+    }
   </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
-  <div class="w-full max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 space-y-6">
+<body class="bg-gradient-to-br from-indigo-500 via-purple-600 to-pink-500 flex items-center justify-center min-h-screen p-4">
+  <div class="w-full max-w-md mx-auto bg-white rounded-3xl shadow-2xl p-8 space-y-8 transform transition-all duration-300 hover:scale-[1.01]">
     
     <div id="main-title" class="text-center">
-      <h1 class="text-3xl font-bold text-gray-800">Class Attendance</h1>
-      <p class="text-gray-500 mt-2">Please select your name to mark your attendance.</p>
+      <h1 class="text-4xl font-extrabold text-gray-900 leading-tight">Class Attendance</h1>
+      <p class="text-gray-600 mt-3 text-lg">Your presence matters!</p>
     </div>
 
-    <div id="selection-form" class="space-y-4">
+    <div id="selection-form" class="space-y-6">
       <div>
-        <label for="student-select" class="sr-only">Select your name</label>
-        <select id="student-select" class="block w-full px-4 py-3 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-          <option value="" selected disabled>-- Select your name --</option>
+        <label for="student-select" class="block text-gray-700 text-sm font-semibold mb-2">Select your name:</label>
+        <select id="student-select" class="block w-full px-5 py-3 text-lg text-gray-900 border border-gray-300 rounded-xl bg-gray-50 focus:ring-purple-500 focus:border-purple-500 shadow-sm transition-all duration-200 ease-in-out hover:border-purple-400">
+          <option value="" selected disabled>-- Choose your name --</option>
         </select>
       </div>
-      <button id="confirm-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg">
+      <button id="confirm-btn" class="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-bold py-3.5 px-4 rounded-xl text-lg shadow-lg transform hover:-translate-y-1 transition-all duration-200 ease-in-out">
         Confirm Attendance
       </button>
     </div>
 
-    <div id="zoom-section" class="hidden text-center pt-4 border-t border-gray-200">
-      <h2 class="text-xl font-semibold text-green-600">Attendance Confirmed!</h2>
-      <p class="text-gray-600 mt-2 mb-4">Here are the details for today's class:</p>
-      <div class="text-left bg-gray-50 p-4 rounded-lg space-y-2">
-        <p><strong>Meeting ID:</strong> <span id="zoom-id" class="text-gray-700"></span></p>
-        <p><strong>Password:</strong> <span id="zoom-password" class="text-gray-700"></span></p>
+    <div id="zoom-section" class="hidden text-center pt-6 border-t border-gray-200 animate-fadeInSlideUp">
+      <h2 class="text-2xl font-bold text-green-700 mb-3">Attendance Confirmed! 🎉</h2>
+      <p class="text-gray-700 mt-2 mb-5 text-lg">You're all set for today's class.</p>
+      <div class="text-left bg-green-50 p-6 rounded-xl space-y-3 border border-green-200 shadow-md">
+        <p class="text-gray-800 text-lg"><strong>Meeting ID:</strong> <span id="zoom-id" class="font-medium text-green-800"></span></p>
+        <p class="text-gray-800 text-lg"><strong>Password:</strong> <span id="zoom-password" class="font-medium text-green-800"></span></p>
       </div>
-      <a id="zoom-link" href="#" target="_blank" class="mt-4 inline-block w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg">
-        Join Zoom Meeting
+      <a id="zoom-link" href="#" target="_blank" class="mt-6 inline-block w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3.5 px-6 rounded-xl text-lg shadow-md transform hover:-translate-y-1 transition-all duration-200 ease-in-out">
+        🚀 Join Zoom Meeting
       </a>
     </div>
   </div>
@@ -50,36 +58,28 @@
     const classData = {"zoomInfo":{"zoomLink":"https://us06web.zoom.us/j/7577761092?pwd=4oGx7vmFBwiQbk7lNLtkW4if5zslpN.1","zoomId":"757 776 1092","zoomPassword":"ac7zhU"},"studentList":["Abadeer Romany","Abdel Rahman Mohamed Nabil","Abdelghfar Essam Ali","Abdelrhman rafat zayan","Abram Elkomos brnaba","Ahmed Abo Bakr ahmed","Ahmed ehab fayez","Ahmed Hamada","Ahmed hesham mostafa","Ahmed mohamed ahmed abdelhakam","Ahmed Mohamed Hamed","Ahmed Omar Yousef","Ahmed Saleh","Ahmed sherif","Ahmed Yasser","Ali hazem abdelrouf","Ali Mohammed Ahmed","Alia Hisham Diab","Amir Ishak Edward","Amr Eisa","Amy ayman ekram","Anas Mohamed Essam","Anasemon Armia kamal","Antony Ashraf Raouf","Aseel Adel","Aster Nasser","Ayten khalil","Basmala Hamdy Gomaa","BAVLY YOUHANNA","bishoy ayman","bishoy ayman","Carol Tharwat","Ceril sameh","Dani Petro Emad","Daniel adel","Dareen soliman","Elaria hany makar","Eman wael farouk farid aboushady","Ereny Elkomos brnaba","Esraa gomaa","Estafros Ehab","FADY JOSEPH","Fady rady","Farah waheed","Fares","Fares Ahmed Farrag","Farida ayman salah ahmed","farida mohamed sameh","Farida sameh omar","Fatima abdelaal","Fatma Mohamed Ali","Gana Ragab Hassan","Ganna emad salah","George Amgad Sorial","George Magdy","Habiba Abdelatty","Habiba Ahmed Ismael","Habiba Ahmed moustaf elnabawie","Habiba mohamed","Hagar hassan zakaria","Haidy amen","hamza mohamed ibrahem","Hana haithem elseihy","Hana Zakarya","Hannah ali massoud","Hannah youssef yacoub","Hassan Islam hamdy","Haya mahmoud","Haya Yasser Helmy","helana hany","Hla mohamed abo Zaid","Ibrahim Mahmoud Elzare3","Jana mohamed","Jana mohamed","Jana mohamed Ahmed","Jannat Ahmed Mohamed","jasmine mina","Jessica Malak Botros","Jessy amir","Jola hany Maher","Joseph hany lwiez","Josiana Ehab Hosny","Judy Hany Rashad Gaber","Julia George Nagdy","Jumana Ayman Mohamed","kareem ahmad mohammed","Kareem Ashraf","Kareem hany hamdy","Karim Ahmed Maher","Kenzy ahmed ali","Kenzy Amr","Kenzy Metwalli","Kenzy Mohamed kamal","Kermena Romany","Kero Hany rasmy","Kerollos hany samir","Kerollos hany samir","Kerolos Eid makram","Kerolos Milad Genedy","Khloud magdy","Lara Sherif","Lavinia Ayman","lyanhaithamatef","Magdy Ezz Alarab Gad","Magdy Ezz Alarab Gad","Mahmoud hany","Mahmoud Mohamed Reyad","mahmoud sayed","Mai Osama Sekina","malak ahmed mohamed amer","Malak Elmaghraby","Malak emad eldin mohamed","Malak fouad","Malak wael Ibrahim Mohammed Shahin","Malek amr","Manwella Raafat","Mariam ahmed abdel monem","Mariam ahmed abo el maarf","Mariam ahmed mohamed","Mariam eldairy","Mariam elkess rois","mariam essam","Mariam Mahmoud ezz","Mariam Mahmoud Mahrous Ahmed Ali Emara","Mariam Mohamed Gholam Nabi","Mariam Zakaria mohy eldeen","Marian Saeed badry","Mariem Osama taha","Marina Atef Younan","Mariz boles gerges","Mark Basem Magdy","Mark Samy Morcos","Mark sheren nassan","maroska","Martin romany","Marven Amin Nabil Shaker","Marwan Hany","marwan reda hussein","Marween Ayman","Maryam maher","Matthew basem","Maura Emad Fayez","May Mostafa","menna ali","Menna Ashref kamal","Menna Badreldeen Hassan","Mennatullah Talaat Abdelfattah","Merola wael","Merolla safwat","Mina Hany","minour maged","Miracle Remon Refaat","Moaz Ahmed Hassan","Moez sleem","Mohamed  Ahmed","Mohamed ahmed","Mohamed ahmed elaiary","Mohamed Ahmed Fawzy","Mohamed Ayman Elnaggar","Mohamed ayman Fayad","Mohamed emad","Mohamed Hussien","Mohamed Mostafa","Mohamed Nabil Abdalazeem","mohamed yasser","Monica Mokhles Shawky","Mostafa Mohamed Aly Ragaee","Moustafa Mahmoud El-kholy","Moustafa Mahmoud Elsherif","muhrail adel shenouda","muhral maged","Nada Mohamed","Natalie Michael","Nejar Walid Makram","Noha Jad","Noha Samy mohamed hassan","Noor Abd El Razek","Nora Ahmed Radwan","Nora hassan hamza","Nour alaa Mohamed","Nour amr","Nouran Essam","Nouran Hamada Mohammed","Nourhan Ashraf","Omar ahmed badawy","Omar Kadry","Omar Mahrous","omar Mohamed elsayed","Osama ahmed Khalifa","Pater Mina","Peter Mina","Pier Elia","Priscilla Naeim","Rahma Eid Abd Elwahah","rahma hafez","Rawan abdelkareem fathy okily","Remonda Remon Ezzat","Renad Atef Hussein","Roaa Khaled","Robin Micheal hosney","Rony shaker abdo","Rozalia refaat","Rozan mohamed ali","Sahar Maher","Sahar Mohamed elkawas","Sally Gamil","Salma ashraf mohamed","Salma reda maher","Sama Mahmoud aboeldahab","Sama Mohamed","Samar Ali Sayed","Sandy sameh","Sara Michael","Sarah Lawrence","Selena mikeal morad","Shady moody sobhy amin","Sherry saad aziz","Silvia sameh","Sofia shahir helmy","Steven Sameh","Taha mahmoud Ahmed","Thomas Atef Ayad","Tomas Wassem Zaher","Usama Hassan Ahmed","Ussif fawzy","Wateen Mostafa Ragab","Yarah Abdelnaby Aly","yassen amar","Yassin Taha","Yassin Taha Makram","Youana Biskales Eskarous","Youana Eshak ibram","youana osama","Youmna Ibrahim","yousef ashraf ali","Youssef emad samy","Youssef gamal","Youssef maged","Youssef Sameh Gad El-Sayed Khala","Zeina ehab elsafty","Zeyad sherif elsaid","Ziad Sherif ali"]};
     const zoomInfo = classData.zoomInfo || {};
     
-    // Get elements
     const studentSelect = document.getElementById('student-select');
     const confirmBtn = document.getElementById('confirm-btn');
     const zoomSection = document.getElementById('zoom-section');
     const mainTitle = document.getElementById('main-title');
     const selectionForm = document.getElementById('selection-form');
 
-    // NEW: Function to hide the form and show Zoom info
     function showZoomInfo() {
       document.getElementById('zoom-id').textContent = zoomInfo.zoomId || '';
       document.getElementById('zoom-password').textContent = zoomInfo.zoomPassword || '';
       document.getElementById('zoom-link').href = zoomInfo.zoomLink || '#';
       
-      // Show zoom section
       zoomSection.classList.remove('hidden');
-      
-      // Hide selection and title
       if (mainTitle) mainTitle.style.display = 'none';
       if (selectionForm) selectionForm.style.display = 'none';
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      // NEW: Check if attendance was already taken on this browser
       const attendedName = localStorage.getItem('attendanceTaken');
       
       if (attendedName) {
-        // If yes, just show the Zoom info and skip the list
         showZoomInfo();
       } else {
-        // If no, populate the student list
         (classData.studentList || []).forEach(name => {
           const option = document.createElement('option');
           option.value = name;
@@ -99,6 +99,9 @@
       const studentName = selectedOption.value;
 
       try {
+        confirmBtn.textContent = 'Confirming...'; // Visual feedback
+        confirmBtn.disabled = true; // Disable button to prevent multiple clicks
+
         const resp = await fetch(ATTENDANCE_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -109,20 +112,22 @@
         if (!resp.ok) {
           console.error('Server returned non-OK status', resp.status, respText);
           alert('Could not log attendance. Please try again.');
+          confirmBtn.textContent = 'Confirm Attendance'; // Reset button text
+          confirmBtn.disabled = false; // Re-enable on error
           return;
         }
         
         console.log('Attendance logged:', respText);
         
-        // NEW: Save to browser storage
         localStorage.setItem('attendanceTaken', studentName);
         
-        // NEW: Show the zoom info and hide the form
         showZoomInfo();
 
       } catch (err) {
         console.error('Fetch error:', err);
         alert('Could not log attendance. Please try again.');
+        confirmBtn.textContent = 'Confirm Attendance'; // Reset button text
+        confirmBtn.disabled = false; // Re-enable on error
       }
     });
   </script>
